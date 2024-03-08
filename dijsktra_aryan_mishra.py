@@ -8,8 +8,8 @@ height = 500
 width= 1200
 opt_img = np.zeros((height, width), np.uint8)
 start_time = time.time() 
-start = [10,10]  
-goal = [20,20] 
+start = list(map(int, input("Enter start coordinates (x, y) separated by comma: ").split(",")))
+goal = list(map(int, input("Enter goal coordinates (x, y) separated by comma: ").split(",")))
 solvable = True
 
 for x in range(width): 
@@ -48,7 +48,6 @@ if opt_img[start[0],start[1]]==1 or opt_img[goal[0],goal[1]]==1:
 else:
     pass
 
-
 class Node:
     def __init__(self, position, cost, parent): 
         self.position = position
@@ -70,4 +69,7 @@ def explore(node):
                 valid_paths.append([path, cost])
     return valid_paths 
 
-
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  
+frame_rate = 10  
+frame_size = (width, height)
+video_writer = cv2.VideoWriter('path_finding_video.mp4', fourcc, frame_rate, frame_size)
