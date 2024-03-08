@@ -47,3 +47,27 @@ if opt_img[start[0],start[1]]==1 or opt_img[goal[0],goal[1]]==1:
     solvable  =False
 else:
     pass
+
+
+class Node:
+    def __init__(self, position, cost, parent): 
+        self.position = position
+        self.x = position[0]
+        self.y = position[1]
+        self.cost = cost
+        self.parent = parent
+
+def explore(node): 
+    i = node.x
+    j = node.y
+    paths = [(i, j + 1), (i + 1, j), (i - 1, j), (i, j - 1), (i + 1, j + 1), (i - 1, j - 1), (i - 1, j + 1),
+             (i + 1, j - 1)]  
+    valid_paths = []
+    for position, path in enumerate(paths):
+        if not (path[0] >= width or path[0] < 0 or path[1] >= height or path[1] < 0):  
+            if opt_img[path[1]][path[0]] == 0:  
+                cost = 1.414 if position > 3 else 1
+                valid_paths.append([path, cost])
+    return valid_paths 
+
+
