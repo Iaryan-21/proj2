@@ -47,21 +47,17 @@ def explore(node):
     valid_paths = [(pos[:2], pos[2]) for pos in directions if 0 <= pos[0] < width and 0 <= pos[1] < height and opt_img[pos[1], pos[0]] == 0]
     return valid_paths
 
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+frame_rate = 40
+video_writer = cv2.VideoWriter('path_finding_video.mp4', fourcc, frame_rate, (width, height))
 
-q = PriorityQueue()
-visited = set()
-node_objects = {}
-total_points = {(i, j): math.inf for i in range(width) for j in range(height)}
-total_points[start] = 0
-node = Node(start, 0, None)
-node_objects[start] = node
-q.put((node.cost, node.position))
-opt_img_show = np.dstack([opt_img.copy()*255, opt_img.copy()*255, opt_img.copy()*255])
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')  
-frame_rate = 10  
-frame_size = (width, height)
-video_writer = cv2.VideoWriter('path_finding_video.mp4', fourcc, frame_rate, frame_size)
+
+solvable = True  
 if solvable:
+    write_frequency = 50  
+    node_count = 0
+    opt_img_show = np.zeros((height, width, 3), dtype=np.uint8) 
+
     while not q.empty():
         current_cost, current_pos = q.get()
         if current_pos == goal:
@@ -71,11 +67,37 @@ if solvable:
             continue
         visited.add(current_pos)
         current_node = node_objects[current_pos]
+
         for next_pos, cost in explore(current_node):
             next_cost = current_cost + cost
             if next_pos not in visited or next_cost < total_points[next_pos]:
                 total_points[next_pos] = next_cost
-                next_node = Node(next_pos,next_cost, current_node)
+                next_node = Node(next_pos, next_cost, current_node)
                 node_objects[next_pos] = next_node
-                q.put((next_cost,next_pos))
-                opt_img_show[next_pos[1],next_pos[0]] = [0,0,255]
+                q.put((next_cost, next_pos))
+                
+                flipped_y = height - 1 - next_pos[1] 
+                opt_img_show[flipped_y, next_pos[0], :] = [0, 0, 255] 
+                
+                node_count += 1
+                if node_count % write_frequency == 0:
+                    video_writer.write(opt_img_show.astype('uint8')) 
+    path = []
+    current_pos = goal
+    while current_pos != start:
+        path.append(current_pos)
+        current_node = node_objects[current_pos]
+        current_pos = current_node.parent.position if current_node.parent else None
+    path.reverse() 
+    for position in path:
+        flipped_y = height - 1 - position[1] 
+        opt_img_show[flipped_y, position[0], :] = [0, 255, 0] 
+    video_writer.write(opt_img_show.astype('uint8'))  
+
+video_writer.release()
+
+
+
+cv2.imshow('Path Finding Final', opt_img_show)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
