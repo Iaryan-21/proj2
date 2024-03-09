@@ -26,8 +26,8 @@ for x in range(width):
        
         
 
-start = tuple(map(int, input("Enter start coordinates (x, y) separated by comma: ").split(",")))
-goal = tuple(map(int, input("Enter goal coordinates (x, y) separated by comma: ").split(",")))
+start = tuple(map(int, input("Enter start coordinates (x, y) separated by ,: ").split(",")))
+goal = tuple(map(int, input("Enter goal coordinates (x, y) separated by ,: ").split(",")))
 
 if opt_img[start[1], start[0]] == 1 or opt_img[goal[1], goal[0]] == 1:
     print("Not valid entries:")
