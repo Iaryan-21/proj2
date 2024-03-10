@@ -12,7 +12,7 @@ import math                                                                     
 import numpy as np                                                                          #importing numpy library
 from queue import PriorityQueue                                                             #importing PriorityQueue from queue
 import cv2                                                                                  #importing cv2 library
-import time                                                                                 #importing time library
+
 
 height = 500                                                                                #height of the image
 width = 1200                                                                                #width of the image
