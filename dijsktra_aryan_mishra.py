@@ -70,7 +70,7 @@ q.put((0, start))                                                               
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')                                                         #creating a video writer object
 frame_rate = 40                                                                                  #setting the frame rate
-video_writer = cv2.VideoWriter('path_finding_video.mp4', fourcc, frame_rate, (width, height))    #creating a video file
+video_writer = cv2.VideoWriter('dijkstra_aryan_mishra.mp4', fourcc, frame_rate, (width, height))    #creating a video file
 
 
 solvable = True                                                                            #setting solvable to True
@@ -119,6 +119,6 @@ video_writer.release()
 
 
 
-cv2.imshow('Path Finding Final', opt_img_show)                                            #displaying the final image
+cv2.imshow('dijkstra_aryan_mishra', opt_img_show)                                            #displaying the final image
 cv2.waitKey(0)
 cv2.destroyAllWindows()
