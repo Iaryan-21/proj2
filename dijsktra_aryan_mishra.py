@@ -24,8 +24,6 @@ for x in range(width):
         if (y>=0 and y<=5) or (y<=500 and y>=495) or (x>=0 and x<=5) or (x<=1200 and x>=1195):
             opt_img[y,x] = 1
        
-        
-
 start = tuple(map(int, input("Enter start coordinates (x, y) separated by ,: ").split(",")))
 goal = tuple(map(int, input("Enter goal coordinates (x, y) separated by ,: ").split(",")))
 
@@ -43,7 +41,8 @@ class Node:
 
 def explore(node):
     i, j = node.position
-    directions = [(i,j+1,1),(i+1,j,1),(i-1,j,1),(i,j-1,1), (i+1,j+1,1.4),(i-1,j-1,1.4), (i-1,j+1,1.4),(i+1,j-1,1.4)]
+    directions = [(i,j+1,1),(i+1,j,1),(i-1,j,1),(i,j-1,1),
+                  (i+1,j+1,1.4),(i-1,j-1,1.4), (i-1,j+1,1.4),(i+1,j-1,1.4)]
     valid_paths = [(pos[:2], pos[2]) for pos in directions if 0 <= pos[0] < width and 0 <= pos[1] < height and opt_img[pos[1], pos[0]] == 0]
     return valid_paths
 
@@ -55,6 +54,7 @@ total_points = {(i, j): float('inf') for i in range(width) for j in range(height
 total_points[start] = 0
 node_objects[start] = Node(start, 0, None)
 q.put((0, start))
+
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 frame_rate = 40
@@ -104,8 +104,6 @@ if solvable:
     video_writer.write(opt_img_show.astype('uint8'))  
 
 video_writer.release()
-
-
 
 cv2.imshow('Path Finding Final', opt_img_show)
 cv2.waitKey(0)
