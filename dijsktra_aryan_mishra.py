@@ -47,6 +47,15 @@ def explore(node):
     valid_paths = [(pos[:2], pos[2]) for pos in directions if 0 <= pos[0] < width and 0 <= pos[1] < height and opt_img[pos[1], pos[0]] == 0]
     return valid_paths
 
+q = PriorityQueue()
+visited = set()
+node_objects = {}
+total_points = {(i, j): float('inf') for i in range(width) for j in range(height)}
+
+total_points[start] = 0
+node_objects[start] = Node(start, 0, None)
+q.put((0, start))
+
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 frame_rate = 40
 video_writer = cv2.VideoWriter('path_finding_video.mp4', fourcc, frame_rate, (width, height))
